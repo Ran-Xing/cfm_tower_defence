@@ -2,6 +2,7 @@
 __author__ = "xr"
 
 import logging
+import random
 import time
 
 from airtest.core.api import *
@@ -57,7 +58,7 @@ def app():
     retry(start_game_bottom, 1, 1)
     print("\033[H\033[2J")  # 清理屏幕
     logger.warning("开始游戏")
-    time.sleep(7)
+    time.sleep(20)
     # 如果不需要就删除这行 ==>
     while True:
         if retry(bot_bottom, 1, 3):
@@ -96,9 +97,16 @@ def in_game():
                 logger.warning("领取礼包")
                 retry(exit_gift, 1, 1)
             if retry(eye_bottom, 1, 3):  # 开启视角
+                # 大图开启
+                int_view = random.choice([100, 1000])
+                swipe((1554, 674), (1554, int_view))
+                swipe((1554, 674), (1554, int_view))
+                swipe((1554, 674), (1554, int_view))
+                swipe((1554, 674), (1554, int_view))
+                swipe((1554, 674), (1554, int_view))
                 logger.warning("新建机器人")
                 logger.warning("查找空位")
-                retry(space_bottom, 2, 10)  # 选择空格
+                retry(space_bottom, 1, 10)  # 选择空格
                 logger.warning("放置机枪")
                 if not retry(gun_bottom, 1, 1):  # 机枪
                     retry(gun_plus_bottom, 1, 1)  # 机枪Plus
@@ -107,7 +115,7 @@ def in_game():
                 if retry(update_bottom, 1, 1):  # 升级
                     retry(gun_plus_bottom, 1, 1)  # touch((1452, 656))  # 升级
         else:
-            if not retry(eye_bottom, 1, 3):
+            if not retry(eye_bottom, 3, 5):
                 break
 
 
